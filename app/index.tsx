@@ -20,12 +20,19 @@ export default function Index() {
   const [data, setData] = useState<
     { exoName: string; weight: string; date: Date }[]
   >([]);
+  const [serchData, setSerchData] = useState<
+    {
+      exoName: string;
+      weight: string;
+      date: Date;
+    }[]
+  >([]);
 
   const storeData = async (value: any) => {
     try {
       await AsyncStorage.setItem("data", value);
     } catch (e) {
-      // saving error
+      console.log(e);
     }
   };
 
@@ -44,6 +51,10 @@ export default function Index() {
     getData();
   }, []);
 
+  useEffect(() => {
+    setSerchData(data);
+  }, [data]);
+
   return (
     <View
       style={{
@@ -52,6 +63,24 @@ export default function Index() {
         backgroundColor: "#FFF",
       }}
     >
+      <TextInput
+        style={{
+          height: 40,
+          minWidth: 140,
+          fontSize: 20,
+          padding: 10,
+          borderBottomWidth: 1,
+          marginTop: 30,
+          marginHorizontal: 10,
+        }}
+        placeholder="Search by exercise name..."
+        onChangeText={(e) => {
+          const newD = data.filter((ele) => {
+            return ele.exoName.startsWith(e);
+          });
+          setSerchData(newD);
+        }}
+      />
       <View
         style={{
           position: "absolute",
@@ -197,9 +226,9 @@ export default function Index() {
       </View>
       <View style={{ marginTop: 30 }}>
         <FlatList
-          data={data}
+          data={serchData}
           refreshing={true}
-          renderItem={({ index, item }) => {
+          renderItem={({ item }) => {
             return (
               <View
                 style={{
@@ -210,13 +239,20 @@ export default function Index() {
                   justifyContent: "space-around",
                 }}
               >
-                <Text style={{ fontSize: 20, color: "red" }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: "#232D3F",
+                    flexWrap: "wrap",
+                    width: 100,
+                  }}
+                >
                   {item.exoName}
                 </Text>
-                <Text style={{ fontSize: 20, color: "blue" }}>
+                <Text style={{ fontSize: 20, color: "#005B41" }}>
                   {item.weight} Kg
                 </Text>
-                <Text style={{ fontSize: 20, color: "green" }}>
+                <Text style={{ fontSize: 20, color: "#008170" }}>
                   {date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}{" "}
                 </Text>
                 <AntDesign
@@ -236,7 +272,7 @@ export default function Index() {
                           text: "ok",
                           onPress: () => {
                             const newData = [...data];
-                            newData.splice(index, 1);
+                            newData.splice(data.indexOf(item), 1);
                             storeData(JSON.stringify(newData));
                             setData(newData);
                           },
