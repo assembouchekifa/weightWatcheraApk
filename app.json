@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "hallow",
-    "slug": "hallow",
+    "name": "Weight watcher",
+    "slug": "Weight-watcher",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.assem101.Weightwatcher"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +32,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "df5cc480-dd8c-4286-9e7c-c4d165a4193d"
+      }
     }
   }
 }
