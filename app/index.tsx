@@ -40,7 +40,12 @@ export default function Index() {
     try {
       const value = await AsyncStorage.getItem("data");
       if (value !== null) {
-        setData(JSON.parse(value));
+        let lastData: any = JSON.parse(value);
+        lastData = lastData.map((e: { date: string | number | Date }) => {
+          e.date = new Date(e.date);
+          return e;
+        });
+        setData(lastData);
       }
     } catch (e) {
       console.log(e);
@@ -253,7 +258,8 @@ export default function Index() {
                   {item.weight} Kg
                 </Text>
                 <Text style={{ fontSize: 20, color: "#008170" }}>
-                  {date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}{" "}
+                  {item.date.getDate()}/{item.date.getMonth() + 1}/
+                  {item.date.getFullYear()}
                 </Text>
                 <AntDesign
                   name="delete"
